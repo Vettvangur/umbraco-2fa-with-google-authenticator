@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("2FactorAuthentication.LoginController",
-    function ($scope, $cookies, localizationService, userService, externalLoginInfo, resetPasswordCodeInfo, $timeout, authResource, dialogService, twoFactorService) {
+    function ($scope, $cookies, localizationService, userService, externalLoginInfo, resetPasswordCodeInfo, $timeout, authResource, editorService, twoFactorService) {
 
         $scope.code = "";
         $scope.provider = "";
