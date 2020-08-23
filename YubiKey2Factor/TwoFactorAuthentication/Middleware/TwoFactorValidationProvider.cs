@@ -27,7 +27,7 @@ namespace TwoFactorAuthentication.Middleware
         /// <param name="manager"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<bool> IUserTokenProvider<BackOfficeIdentityUser, int>.ValidateAsync(string purpose, string token, UserManager<BackOfficeIdentityUser, int> manager, BackOfficeIdentityUser user)
+        async Task<bool> IUserTokenProvider<BackOfficeIdentityUser, int>.ValidateAsync(string purpose, string token, UserManager<BackOfficeIdentityUser, int> manager, BackOfficeIdentityUser user)
         {
             if (purpose == Constants.GoogleAuthenticatorProviderName)
             {
@@ -35,27 +35,27 @@ namespace TwoFactorAuthentication.Middleware
 
                 using (var scope = Current.ScopeProvider.CreateScope(autoComplete: true))
                 {
-                    
-                    var result = scope.Database.Fetch<TwoFactor>(string.Format(
-                        "WHERE [userId] = {0} AND [key] = '{1}' AND [confirmed] = 1",
-                        user.Id, Constants.GoogleAuthenticatorProviderName));
+                    var result = await scope.Database.Query<TwoFactor>()
+                        .Where(x => x.UserId == user.Id && x.Key == Constants.GoogleAuthenticatorProviderName && x.Confirmed)
+                        .ToListAsync();
+
                     if (result.Any() == false)
-                        return Task.FromResult(false);
+                        return false;
 
                     var key = result.First().Value;
                     var validToken = twoFactorAuthenticator.ValidateTwoFactorPIN(key, token);
-                    return Task.FromResult(validToken);
+                    return validToken;
                 }
             }
 
-           /* if (purpose == Constants.YubiKeyProviderName)
-            {
-                var yubiKeyService = new YubiKeyService();
-                var response = yubiKeyService.Validate(token, user.Id);
-                return Task.FromResult(response != null && response.Status == YubicoResponseStatus.Ok);
-            }*/
+            /* if (purpose == Constants.YubiKeyProviderName)
+             {
+                 var yubiKeyService = new YubiKeyService();
+                 var response = yubiKeyService.Validate(token, user.Id);
+                 return Task.FromResult(response != null && response.Status == YubicoResponseStatus.Ok);
+             }*/
 
-            return Task.FromResult(false);
+            return false;
         }
     }
 }

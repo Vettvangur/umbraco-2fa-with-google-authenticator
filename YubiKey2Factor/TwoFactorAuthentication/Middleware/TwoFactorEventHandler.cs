@@ -46,9 +46,6 @@ namespace TwoFactorAuthentication.Middleware
 
         private void ConfigureTwoFactorAuthentication(object sender, OwinMiddlewareConfiguredEventArgs args)
         {
-          
-
-
             var app = args.AppBuilder;
             var applicationContext = Umbraco.Core.Composing.Current.Services;
 
@@ -70,14 +67,15 @@ namespace TwoFactorAuthentication.Middleware
 
             app.SetUmbracoLoggerFactory();
             app.UseTwoFactorSignInCookie(Umbraco.Core.Constants.Security.BackOfficeTwoFactorAuthenticationType, TimeSpan.FromMinutes(5));
-           
+
             // app.UseOAuthAuthorizationServer(options);
             // app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
             // We need to set these values again after our custom changes. Otherwise preview doesn't work.
-            app.UseUmbracoBackOfficeCookieAuthentication(umbracoContextAccessor, Umbraco.Web.Composing.Current.RuntimeState, applicationContext.UserService, GlobalSettings,securitySection )
-                .UseUmbracoBackOfficeExternalCookieAuthentication(umbracoContextAccessor, runtimeState, GlobalSettings)
-                .UseUmbracoPreviewAuthentication(umbracoContextAccessor, runtimeState, globalSettings, securitySection); 
-  
+            // Gunni: Apparently we don't need this for preview to work and the following code breaks other Identity providers
+            //app.UseUmbracoBackOfficeCookieAuthentication(umbracoContextAccessor, Umbraco.Web.Composing.Current.RuntimeState, applicationContext.UserService, GlobalSettings, securitySection)
+            //    .UseUmbracoBackOfficeExternalCookieAuthentication(umbracoContextAccessor, runtimeState, GlobalSettings)
+            //    .UseUmbracoPreviewAuthentication(umbracoContextAccessor, runtimeState, globalSettings, securitySection);
+
             app.ConfigureUserManagerForUmbracoBackOffice<TwoFactorBackOfficeUserManager, BackOfficeIdentityUser>(
                 Umbraco.Web.Composing.Current.RuntimeState,
                 GlobalSettings,
