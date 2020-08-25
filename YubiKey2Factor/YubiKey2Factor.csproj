@@ -431,6 +431,8 @@
   <ItemGroup>
     <Content Include="App_Plugins\2FactorAuthentication\2fa-login.html" />
     <Content Include="App_Plugins\2FactorAuthentication\2fa-login.js" />
+    <Content Include="App_Plugins\2FactorAuthentication\lang\en-US.xml" />
+    <Content Include="App_Plugins\2FactorAuthentication\lang\is-IS.xml" />
     <Content Include="App_Plugins\2FactorAuthentication\managementdashboard.controller.js" />
     <Content Include="App_Plugins\2FactorAuthentication\managementdashboard.html" />
     <Content Include="App_Plugins\2FactorAuthentication\managementdashboard.service.js" />
