@@ -1,12 +1,13 @@
 ﻿<div ng-controller="2FactorAuthentication.DashboardController">
     <h2>Two step verification</h2>
     <span>You have two step verification <strong>{{enabledText}}</strong>.</span>
-    <!----><form method="POST" name="twoFactorCodeForm" ng-submit="disable()" ng-if="enabled === true">
-    This action can be done only by administrator:    
-    <button type="submit">Disable two step verification</button>
-               <div class="alert-danger" ng-if="error2FA !== ''">
-                   {{error2FA}}<br />
-               </div>
+    <!---->
+    <form method="POST" name="twoFactorCodeForm" ng-submit="disable()" ng-if="enabled === true">
+        This action can be done only by administrator:    
+        <input type="button" ng-click="disable()" value="Disable two step verification" />
+        <div class="alert-danger" ng-if="error2FA !== ''">
+            {{error2FA}}<br />
+        </div>
    
     </form>
 
