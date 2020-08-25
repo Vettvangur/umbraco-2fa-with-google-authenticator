@@ -30,7 +30,3 @@ The upgrade to v8 required
 6. Changing dialogService to editorServce in the Angular login controller.
 
 ## Issues
-
-The two factor authentication works but there is an issue as the user is not redirected after validating during initial setup or after entering the 2FA code during the login. The user is authenticated but needs to manually refresh the page. The issue is with the Angular view.
-
-More details are in issue #1.
